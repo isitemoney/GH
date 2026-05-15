@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daring Money | اربح المال </title>
+    <title>Daring Money | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -14,7 +14,7 @@
         .hidden { display: none !important; }
         .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); transition: all 0.2s ease; }
-        .num-font { font-family: 'JetBrains Mono', monospace; }
+        .num-font { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
         input, select { background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(71, 85, 105, 0.5) !important; color: white !important; }
     </style>
 </head>
@@ -86,7 +86,7 @@
                         <option value="AsiaCell">رصيد آسيا</option>
                         <option value="USDT">USDT (TRC20)</option>
                     </select>
-                    <input type="text" id="w-account" placeholder="رقم الهاتف أو العنوان" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
+                    <input type="text" id="w-account" placeholder="رقم الهاتف أو المحفظة" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="number" id="w-amount" placeholder="المبلغ (الأدنى 7$)" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
@@ -129,7 +129,7 @@
         let currentUserData = null;
         let isLoginMode = true;
 
-        // دالة نسخ الرابط
+        // دالة النسخ
         function copyRef() {
             const el = document.getElementById('ref-link');
             el.select();
@@ -143,26 +143,31 @@
             }, 3000);
         }
 
-        // دالة السحب والرسالة
+        // دالة السحب
         function confirmWithdraw() {
-            const amount = parseFloat(document.getElementById('w-amount').value);
+            const amountInput = document.getElementById('w-amount');
+            const amount = parseFloat(amountInput.value);
             const method = document.getElementById('w-method').value;
             const account = document.getElementById('w-account').value;
             const contact = document.getElementById('w-contact').value;
 
             if (amount < 7 || isNaN(amount)) return alert("الحد الأدنى للسحب هو 7$");
             if (amount > (currentUserData.withdrawableBalance || 0)) return alert("رصيدك غير كافٍ.");
+            if (!account || !contact) return alert("يرجى ملء كافة معلومات التواصل.");
 
             db.ref('users/' + auth.currentUser.uid).transaction(d => {
                 if (d) d.withdrawableBalance = Number((d.withdrawableBalance - amount).toFixed(2));
                 return d;
             }).then(() => {
-                db.ref('withdrawals').push({ uid: auth.currentUser.uid, amount, method, account, contact, status: 'pending', timestamp: Date.now() });
+                db.ref('withdrawals').push({
+                    uid: auth.currentUser.uid, amount, method, account, contact, status: 'pending', timestamp: Date.now()
+                });
                 alert("✅ تم إرسال طلب السحب بنجاح!\nالرجاء الانتظار لحين تأكيد الدفع، تستغرق العملية من 24 إلى 72 ساعة.");
+                amountInput.value = "";
             });
         }
 
-        // معالجة النقرات والتوجيه
+        // معالجة الزوار
         async function handleVisitor(id) {
             try {
                 const ipRes = await fetch('https://api.ipify.org?format=json');
@@ -182,6 +187,7 @@
                             d.clicks = (d.clicks || 0) + 1;
                             d.todayBalance = Number(((d.todayBalance || 0) + CLICK_PRICE).toFixed(2));
                             d.totalBalance = Number(((d.totalBalance || 0) + CLICK_PRICE).toFixed(2));
+                            d.withdrawableBalance = Number(((d.withdrawableBalance || 0) + CLICK_PRICE).toFixed(2));
                         }
                         return d;
                     });
@@ -196,7 +202,7 @@
             setTimeout(() => { window.location.href = link; }, 2000);
         }
 
-        // تشغيل التطبيق
+        // تسجيل الدخول والبيانات
         auth.onAuthStateChanged(user => {
             if (user) {
                 showUI('dashboard-section');
@@ -222,20 +228,21 @@
                 document.getElementById('stat-total').innerText = `$${(d.totalBalance || 0).toFixed(2)}`;
                 document.getElementById('stat-withdrawable').innerText = `$${(d.withdrawableBalance || 0).toFixed(2)}`;
                 document.getElementById('stat-clicks').innerText = d.clicks || 0;
-                document.getElementById('user-welcome').innerText = d.username;
+                document.getElementById('user-welcome').innerText = "أهلاً بك، " + d.username;
                 document.getElementById('ref-link').value = window.location.origin + window.location.pathname + "?id=" + user.uid;
             });
 
             db.ref('withdrawals').orderByChild('uid').equalTo(user.uid).on('value', snap => {
                 const list = document.getElementById('user-withdraw-history');
                 const data = snap.val(); list.innerHTML = "";
-                if (!data) return list.innerHTML = "<p class='text-center text-[9px] text-slate-500'>لا توجد سحوبات.</p>";
+                if (!data) return list.innerHTML = "<p class='text-center text-[10px] text-slate-500 py-4 italic'>لا توجد سحوبات بعد.</p>";
                 Object.keys(data).reverse().forEach(id => {
                     const w = data[id];
                     const s = w.status === 'paid' ? 'تم الدفع ✅' : 'قيد الانتظار ⏳';
-                    list.innerHTML += `<div class="flex justify-between items-center glass-card p-3 rounded-xl border border-slate-800">
-                        <div><p class="num-font font-bold text-xs">$${w.amount}</p><p class="text-[8px] text-slate-500">${w.method}</p></div>
-                        <div class="text-[8px] font-bold text-blue-400">${s}</div>
+                    const c = w.status === 'paid' ? 'text-emerald-400' : 'text-amber-400';
+                    list.innerHTML += `<div class="flex justify-between items-center glass-card p-4 rounded-xl border border-slate-800 mb-2">
+                        <div><p class="num-font font-bold text-sm text-white">$${w.amount.toFixed(2)}</p><p class="text-[9px] text-slate-500">${w.method}</p></div>
+                        <div class="text-[10px] font-bold ${c} underline italic">${s}</div>
                     </div>`;
                 });
             });
