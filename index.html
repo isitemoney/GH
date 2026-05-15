@@ -31,17 +31,17 @@
                 <span id="user-welcome" class="text-[10px] text-emerald-400 font-black italic underline">...</span>
             </div>
         </div>
-        <button onclick="logout()" class="bg-red-500/10 text-red-500 px-3 py-1 rounded-lg border border-red-500/20 text-[10px] font-bold active:scale-95 transition-all">خروج</button>
+        <button onclick="logout()" class="bg-red-500/10 text-red-500 px-3 py-1 rounded-lg border border-red-500/20 text-[10px] font-bold">خروج</button>
     </nav>
 
     <div id="auth-section" class="hidden flex items-center justify-center min-h-screen p-4">
         <div class="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl w-full max-w-md border border-slate-800 text-center">
-            <h1 class="text-3xl font-black text-white mb-8 italic">ERAN <span class="text-blue-500">MONEY</span></h1>
+            <h1 id="auth-title" class="text-3xl font-black text-white mb-8 italic">ERAN <span class="text-blue-500">MONEY</span></h1>
             <div class="space-y-4">
-                <input type="text" id="username" placeholder="الاسم الكامل" class="hidden w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none focus:border-blue-500 transition text-sm">
+                <input type="text" id="username" placeholder="الاسم الكامل" class="hidden w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none focus:border-blue-500 transition text-sm text-right">
                 <input type="email" id="email" placeholder="البريد الإلكتروني" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none focus:border-blue-500 transition text-sm text-left">
                 <input type="password" id="password" placeholder="كلمة المرور" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none focus:border-blue-500 transition text-sm text-left">
-                <button onclick="handleAuth()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-bold transition active:scale-95">استمرار</button>
+                <button onclick="handleAuth()" id="auth-btn" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-bold transition active:scale-95 shadow-lg">تسجيل الدخول</button>
                 <button onclick="toggleAuthMode()" id="auth-switch" class="w-full text-slate-500 text-xs font-bold underline">ليس لديك حساب؟ سجل الآن</button>
             </div>
         </div>
@@ -59,42 +59,8 @@
             <h4 class="font-bold mb-3 text-[10px] text-slate-500 uppercase tracking-widest border-r-2 border-blue-500 pr-2">🔗 رابط التسويق الخاص بك</h4>
             <div class="flex bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 p-1">
                 <input type="text" id="ref-link" readonly class="bg-transparent p-3 flex-1 text-[10px] outline-none text-blue-300 text-left font-mono italic">
-                <button onclick="copyRef()" class="bg-blue-600 px-6 py-2 rounded-xl text-xs font-bold transition active:scale-90">نسخ</button>
+                <button onclick="copyRef()" class="bg-blue-600 px-6 py-2 rounded-xl text-xs font-bold transition">نسخ</button>
             </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-            <button onclick="openWithdraw()" class="bg-emerald-600 p-5 rounded-[2rem] font-bold shadow-lg active:scale-95 text-sm">💰 طلب سحب الأرباح</button>
-            <a href="https://t.me/eruuiyl" target="_blank" class="bg-slate-800 p-5 rounded-[2rem] font-bold border border-slate-700 text-center flex items-center justify-center text-sm italic">💬 الدعم الفني</a>
-        </div>
-
-        <div id="withdraw-modal" class="hidden fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-md">
-            <div class="bg-slate-900 p-8 rounded-[2.5rem] border border-emerald-500/20 w-full max-w-md space-y-4 shadow-[0_0_50px_rgba(16,185,129,0.1)]">
-                <h3 class="text-xl font-black text-emerald-400 text-center italic">سحب الأرباح</h3>
-                <div class="space-y-4">
-                    <select id="w-method" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none text-sm font-bold">
-                        <option value="ZainCash">زين كاش (Zain Cash)</option>
-                        <option value="AsiaCell">رصيد آسيا (AsiaCell)</option>
-                        <option value="USDT">USDT (TRC20)</option>
-                    </select>
-                    <input type="text" id="w-account" placeholder="رقم المحفظة أو العنوان" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none text-sm text-right font-mono">
-                    <input type="number" id="w-amount" placeholder="المبلغ (الحد الأدنى 7$)" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none text-sm text-right font-mono">
-                    <input type="text" id="w-contact" placeholder="يوزر تليجرام للتواصل" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 outline-none text-sm text-right italic">
-                    <button onclick="confirmWithdraw()" class="w-full bg-emerald-600 py-4 rounded-2xl font-black hover:bg-emerald-700 transition active:scale-95">تأكيد الإرسال 💰</button>
-                    <button onclick="openWithdraw()" class="w-full text-slate-500 text-[10px] font-black tracking-widest mt-2 uppercase">إلغاء الطلب</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-slate-900/50 p-6 rounded-[2rem] border border-slate-800 shadow-inner text-right">
-            <h4 class="text-[10px] font-black mb-4 text-slate-500 border-r-4 border-blue-600 pr-2 uppercase">📋 سجل العمليات المالية</h4>
-            <div id="user-withdraw-history" class="space-y-3 text-[11px]"></div>
-        </div>
-
-        <div id="admin-area" class="hidden space-y-8 mt-10 border-t border-slate-800 pt-10">
-            <div class="bg-red-900/5 border border-red-500/20 p-6 rounded-[2rem] text-right text-red-400">⚙️ لوحة الإدارة</div>
-            <div id="withdraw-list" class="space-y-4"></div>
-            <div id="admin-list" class="space-y-4 text-xs"></div>
         </div>
     </div>
 
@@ -113,7 +79,48 @@
         const db = firebase.database();
         const DEFAULT_MARKETING_LINK = "https://hp.funroom.store/a/8nw6emt2";
 
-        // --- وظيفة تشغيل الفحص الأساسية ---
+        let isLoginMode = true;
+
+        // تبديل بين الدخول والتسجيل
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('username').classList.toggle('hidden', isLoginMode);
+            document.getElementById('auth-title').innerHTML = isLoginMode ? "ERAN <span class='text-blue-500'>MONEY</span>" : "عضو <span class='text-blue-500'>جديد</span>";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "تسجيل الدخول" : "إنشاء الحساب";
+            document.getElementById('auth-switch').innerText = isLoginMode ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب بالفعل؟ ادخل هنا";
+        }
+
+        // معالجة الدخول والتسجيل
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const name = document.getElementById('username').value;
+
+            if (!email || !pass) return alert("يرجى إدخال البيانات");
+
+            try {
+                if (isLoginMode) {
+                    await auth.signInWithEmailAndPassword(email, pass);
+                } else {
+                    if (!name) return alert("يرجى كتابة اسمك");
+                    const res = await auth.createUserWithEmailAndPassword(email, pass);
+                    // إنشاء بيانات المروج الجديد في قاعدة البيانات
+                    await db.ref('users/' + res.user.uid).set({
+                        username: name,
+                        email: email,
+                        totalBalance: 0,
+                        todayBalance: 0,
+                        withdrawableBalance: 0,
+                        clicks: 0,
+                        marketingLink: DEFAULT_MARKETING_LINK,
+                        lastResetDate: Date.now()
+                    });
+                }
+            } catch (e) {
+                alert("خطأ: " + e.message);
+            }
+        }
+
         function checkRoute() {
             const params = new URLSearchParams(window.location.search);
             const promoterId = params.get('id');
@@ -163,7 +170,6 @@
                 if (user) {
                     showUI('dashboard-section');
                     loadUserData(user);
-                    loadUserWithdrawHistory(user.uid);
                 } else { showUI('auth-section'); }
             });
         }
@@ -187,12 +193,9 @@
         }
 
         function copyRef() { const el = document.getElementById('ref-link'); el.select(); document.execCommand('copy'); alert("✅ تم النسخ!"); }
-        function openWithdraw() { document.getElementById('withdraw-modal').classList.toggle('hidden'); }
         function logout() { auth.signOut(); }
 
-        // --- السطر الذهبي لتشغيل كل شيء ---
         checkRoute();
-
     </script>
 </body>
 </html>
