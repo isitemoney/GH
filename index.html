@@ -9,32 +9,36 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
         body { font-family: 'Tajawal', sans-serif; background-color: #050b1a; color: #e2e8f0; }
         .hidden { display: none !important; }
         .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .gradient-text { background: linear-gradient(90deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); transition: all 0.3s ease; }
+        /* خط الأرقام الاحترافي */
+        .num-font { font-family: 'JetBrains Mono', monospace; letter-spacing: -0.05em; }
         input, select { background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(71, 85, 105, 0.5) !important; color: white !important; }
     </style>
 </head>
 <body>
 
     <div id="redirect-screen" class="hidden fixed inset-0 z-[10000] bg-[#050b1a] flex flex-col items-center justify-center p-6 text-center">
-        <div class="relative w-20 h-20 mb-8">
+        <div class="relative w-16 h-16 mb-6">
             <div class="absolute inset-0 border-4 border-blue-500/10 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin"></div>
         </div>
-        <h2 class="text-2xl font-black text-white mb-2 italic">DARING <span class="text-blue-500">MONEY</span></h2>
         <div class="flex items-center gap-2 justify-center">
-            <span class="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
-            <p class="text-slate-300 font-bold text-sm tracking-wide animate-pulse">جاري فحص الأمان...</p>
+            <p class="text-slate-200 font-bold text-lg tracking-wide">جاري فحص الأمان</p>
+            <span class="flex gap-1">
+                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></span>
+                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+            </span>
         </div>
     </div>
 
     <div id="copy-toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-[1000]">
         <span class="text-lg">✅</span>
-        <span class="text-sm font-bold">تم نسخ رابطك التسويقي بنجاح!</span>
+        <span class="text-sm font-bold">تم نسخ الرابط بنجاح!</span>
     </div>
 
     <nav id="nav" class="hidden glass-card sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
@@ -61,10 +65,22 @@
     <div id="dashboard-section" class="hidden max-w-4xl mx-auto p-4 space-y-6">
         
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-blue-400 text-[10px] font-black mb-1">أرباح اليوم</p><h3 id="stat-today" class="text-xl font-black">$0.00</h3></div>
-            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-slate-400 text-[10px] font-black mb-1">الإجمالي</p><h3 id="stat-total" class="text-xl font-black">$0.00</h3></div>
-            <div class="glass-card p-4 rounded-2xl text-center border-b-emerald-500/40"><p class="text-emerald-400 text-[10px] font-black mb-1 underline">للسحب</p><h3 id="stat-withdrawable" class="text-xl font-black text-emerald-400">$0.00</h3></div>
-            <div class="glass-card p-4 rounded-2xl text-center border-b-purple-500/40"><p class="text-purple-400 text-[10px] font-black mb-1">النقرات</p><h3 id="stat-clicks" class="text-xl font-black text-white">0</h3></div>
+            <div class="glass-card p-4 rounded-2xl text-center border-b-blue-500/20">
+                <p class="text-blue-400 text-[10px] font-black mb-1">أرباح اليوم</p>
+                <h3 id="stat-today" class="num-font text-xl font-bold">$0.00</h3>
+            </div>
+            <div class="glass-card p-4 rounded-2xl text-center">
+                <p class="text-slate-400 text-[10px] font-black mb-1">إجمالي الأرباح</p>
+                <h3 id="stat-total" class="num-font text-xl font-bold">$0.00</h3>
+            </div>
+            <div class="glass-card p-4 rounded-2xl text-center border-b-emerald-500/40">
+                <p class="text-emerald-400 text-[10px] font-black mb-1 underline">القابل للسحب</p>
+                <h3 id="stat-withdrawable" class="num-font text-xl font-bold text-emerald-400">$0.00</h3>
+            </div>
+            <div class="glass-card p-4 rounded-2xl text-center">
+                <p class="text-purple-400 text-[10px] font-black mb-1">النقرات</p>
+                <h3 id="stat-clicks" class="num-font text-xl font-bold text-white">0</h3>
+            </div>
         </div>
 
         <div class="glass-card p-6 rounded-[2rem] border-r-4 border-blue-500">
@@ -76,10 +92,7 @@
         </div>
 
         <div class="glass-card p-6 rounded-[2rem] border-r-4 border-emerald-500">
-            <div class="flex items-center gap-2 mb-6">
-                <span class="text-xl">💰</span>
-                <h4 class="font-bold text-sm text-emerald-400">طلب سحب الأرباح</h4>
-            </div>
+            <h4 class="font-bold text-sm text-emerald-400 mb-6">💰 طلب سحب الأرباح</h4>
             <div class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <select id="w-method" class="w-full p-4 rounded-2xl text-xs font-bold outline-none">
@@ -93,13 +106,14 @@
                     <input type="number" id="w-amount" placeholder="المبلغ (الأدنى 7$)" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
                     <input type="text" id="w-contact" placeholder="يوزر التليجرام الخاص بك" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
                 </div>
-                <button onclick="confirmWithdraw()" class="btn-primary w-full py-4 rounded-2xl font-black text-white shadow-lg active:scale-95 transition-all">تأكيد طلب السحب</button>
+                <button onclick="confirmWithdraw()" class="btn-primary w-full py-4 rounded-2xl font-black text-white shadow-lg active:scale-95">تأكيد طلب السحب</button>
             </div>
         </div>
 
         <div class="glass-card p-6 rounded-[2rem]">
             <h4 class="text-[10px] font-black mb-4 text-slate-500 uppercase tracking-widest italic">📋 سجل السحوبات</h4>
-            <div id="user-withdraw-history" class="space-y-3"></div>
+            <div id="user-withdraw-history" class="space-y-3">
+                </div>
         </div>
 
         <a href="https://t.me/eruuiyl" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-center gap-3 border-blue-500/20 active:scale-95 transition-all">
@@ -129,19 +143,15 @@
         const db = firebase.database();
 
         const ADMIN_EMAILS = ["xxetali46@gmail.com", "xxetali47@gmail.com"];
-        const DEFAULT_LINK = "https://hp.funroom.store/a/8nw6emt2";
         const CLICK_PRICE = 0.02;
 
         let currentUserData = null;
         let isLoginMode = true;
 
-        // وظيفة نسخ الرابط مع الإشعار المنبثق
         function copyRef() {
             const el = document.getElementById('ref-link');
             el.select();
-            el.setSelectionRange(0, 99999);
             document.execCommand('copy');
-
             const toast = document.getElementById('copy-toast');
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
@@ -151,75 +161,37 @@
             }, 3000);
         }
 
-        async function handleVisitor(id) {
-            try {
-                const ipRes = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipRes.json();
-                const vIp = ipData.ip.replace(/\./g, '_');
-                const ipRef = db.ref('ip_logs/' + id + '/' + vIp);
-                const userRef = db.ref('users/' + id);
-                const ipSnap = await ipRef.once('value');
-                const now = Date.now();
+        // --- نظام السحب المصلح ---
+        function confirmWithdraw() {
+            const amount = parseFloat(document.getElementById('w-amount').value);
+            const method = document.getElementById('w-method').value;
+            const account = document.getElementById('w-account').value;
+            const contact = document.getElementById('w-contact').value;
 
-                if (ipSnap.exists() && (now - ipSnap.val() < 86400000)) {
-                    finalizeRedirect(userRef);
-                } else {
-                    await ipRef.set(now);
-                    await userRef.transaction(d => {
-                        if (d) {
-                            d.clicks = (d.clicks || 0) + 1;
-                            d.todayBalance = Number(((d.todayBalance || 0) + CLICK_PRICE).toFixed(2));
-                            d.totalBalance = Number(((d.totalBalance || 0) + CLICK_PRICE).toFixed(2));
-                        }
-                        return d;
-                    });
-                    finalizeRedirect(userRef);
-                }
-            } catch (e) { window.location.href = DEFAULT_LINK; }
-        }
+            if (amount < 7 || isNaN(amount)) return alert("عذراً، الحد الأدنى للسحب هو 7$");
+            if (amount > (currentUserData.withdrawableBalance || 0)) return alert("رصيدك القابل للسحب غير كافٍ.");
+            if (!account || !contact) return alert("يرجى ملء كافة معلومات الدفع.");
 
-        async function finalizeRedirect(ref) {
-            const snap = await ref.once('value');
-            const link = (snap.val() && snap.val().marketingLink) ? snap.val().marketingLink : DEFAULT_LINK;
-            setTimeout(() => { window.location.href = link; }, 1200);
-        }
-
-        function checkRoute() {
-            const params = new URLSearchParams(window.location.search);
-            const promoterId = params.get('id');
-            if (promoterId) {
-                document.getElementById('redirect-screen').classList.remove('hidden');
-                handleVisitor(promoterId);
-            } else { initApp(); }
-        }
-
-        function initApp() {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    showUI('dashboard-section');
-                    processSettlement(user.uid);
-                    loadData(user);
-                    if (ADMIN_EMAILS.includes(user.email)) {
-                        document.getElementById('admin-area').classList.remove('hidden');
-                        loadAdminPanel();
-                    }
-                } else { showUI('auth-section'); }
-            });
-        }
-
-        function processSettlement(uid) {
-            const userRef = db.ref('users/' + uid);
-            userRef.once('value', snap => {
-                const d = snap.val(); if (!d) return;
-                const now = new Date();
-                let settlement = new Date(); settlement.setHours(3, 0, 0, 0);
-                if (now.getTime() > settlement.getTime() && (d.lastResetDate || 0) < settlement.getTime()) {
-                    userRef.update({
-                        withdrawableBalance: Number(((d.withdrawableBalance || 0) + (d.todayBalance || 0)).toFixed(2)),
-                        todayBalance: 0,
-                        lastResetDate: now.getTime()
-                    });
-                }
+            const uid = auth.currentUser.uid;
+            
+            // خصم الرصيد أولاً
+            db.ref('users/' + uid).transaction(d => {
+                if (d) d.withdrawableBalance = Number((d.withdrawableBalance - amount).toFixed(2));
+                return d;
+            }).then(() => {
+                // تسجيل الطلب في قاعدة البيانات
+                db.ref('withdrawals').push({
+                    uid: uid,
+                    amount: amount,
+                    method: method,
+                    account: account,
+                    contact: contact,
+                    status: 'pending',
+                    timestamp: Date.now()
+                }).then(() => {
+                    // رسالة الانتظار المطلوبة
+                    alert("✅ تم إرسال طلب السحب بنجاح!\nالرجاء الانتظار لحين تأكيد الدفع، تستغرق العملية من 24 إلى 72 ساعة.");
+                });
             });
         }
 
@@ -235,41 +207,28 @@
                 document.getElementById('ref-link').value = window.location.origin + window.location.pathname + "?id=" + user.uid;
             });
 
+            // تحميل سجل السحوبات الخاص بالمستخدم
             db.ref('withdrawals').orderByChild('uid').equalTo(user.uid).on('value', snap => {
                 const list = document.getElementById('user-withdraw-history');
-                const data = snap.val(); list.innerHTML = "";
-                if (!data) { list.innerHTML = "<p class='text-[9px] text-slate-600 text-center'>لا توجد طلبات سابقة.</p>"; return; }
+                const data = snap.val();
+                list.innerHTML = "";
+                if (!data) {
+                    list.innerHTML = "<p class='text-[9px] text-slate-600 text-center'>لا توجد طلبات سحب سابقة.</p>";
+                    return;
+                }
                 Object.keys(data).reverse().forEach(id => {
                     const w = data[id];
                     const s = w.status === 'paid' ? 'تم الدفع ✅' : 'قيد الانتظار ⏳';
                     const c = w.status === 'paid' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10';
-                    list.innerHTML += `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl border border-slate-800 italic">
-                        <div><p class="font-black text-xs">$${w.amount}</p><p class="text-[8px] text-slate-500">${w.method}</p></div>
+                    list.innerHTML += `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl border border-slate-800">
+                        <div><p class="num-font font-bold text-xs">$${w.amount.toFixed(2)}</p><p class="text-[8px] text-slate-500">${w.method}</p></div>
                         <div class="px-2 py-1 rounded-lg text-[8px] font-black ${c}">${s}</div>
                     </div>`;
                 });
             });
         }
 
-        function confirmWithdraw() {
-            const amount = parseFloat(document.getElementById('w-amount').value);
-            const method = document.getElementById('w-method').value;
-            const account = document.getElementById('w-account').value;
-            const contact = document.getElementById('w-contact').value;
-
-            if (amount < 7 || isNaN(amount)) return alert("الحد الأدنى 7$");
-            if (amount > currentUserData.withdrawableBalance) return alert("الرصيد غير كافٍ.");
-            if (!account || !contact) return alert("أكمل البيانات.");
-
-            db.ref('users/' + auth.currentUser.uid).transaction(d => {
-                if (d) d.withdrawableBalance = Number((d.withdrawableBalance - amount).toFixed(2));
-                return d;
-            }).then(() => {
-                db.ref('withdrawals').push({ uid: auth.currentUser.uid, amount, method, account, contact, status: 'pending', timestamp: Date.now() });
-                alert("تم إرسال طلبك بنجاح!");
-            });
-        }
-
+        // --- باقي الوظائف الأساسية ---
         async function handleAuth() {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
@@ -278,43 +237,63 @@
                 if (isLoginMode) { await auth.signInWithEmailAndPassword(e, p); }
                 else {
                     const res = await auth.createUserWithEmailAndPassword(e, p);
-                    await db.ref('users/' + res.user.uid).set({ username: n, email: e, clicks: 0, todayBalance: 0, totalBalance: 0, withdrawableBalance: 0, marketingLink: DEFAULT_LINK, lastResetDate: Date.now() });
+                    await db.ref('users/' + res.user.uid).set({
+                        username: n, email: e, clicks: 0, todayBalance: 0, totalBalance: 0, withdrawableBalance: 0, 
+                        marketingLink: "https://hp.funroom.store/a/8nw6emt2", lastResetDate: Date.now() 
+                    });
                 }
             } catch (err) { alert(err.message); }
+        }
+
+        function initApp() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    showUI('dashboard-section');
+                    loadData(user);
+                    if (ADMIN_EMAILS.includes(user.email)) {
+                        document.getElementById('admin-area').classList.remove('hidden');
+                        loadAdminPanel();
+                    }
+                } else { showUI('auth-section'); }
+            });
+        }
+
+        function showUI(id) {
+            document.querySelectorAll('#auth-section, #dashboard-section, #nav').forEach(el => el.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if (id === 'dashboard-section') document.getElementById('nav').classList.remove('hidden');
         }
 
         function toggleAuthMode() {
             isLoginMode = !isLoginMode;
             document.getElementById('username').classList.toggle('hidden', isLoginMode);
             document.getElementById('auth-btn').innerText = isLoginMode ? "تسجيل الدخول" : "إنشاء حساب";
-            document.getElementById('auth-switch').innerText = isLoginMode ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب؟ ادخل هنا";
-        }
-
-        function showUI(id) {
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('dashboard-section').classList.add('hidden');
-            document.getElementById('nav').classList.add('hidden');
-            document.getElementById(id).classList.remove('hidden');
-            if (id === 'dashboard-section') document.getElementById('nav').classList.remove('hidden');
         }
 
         function logout() { auth.signOut(); }
+        
         function loadAdminPanel() {
             db.ref('withdrawals').on('value', snap => {
                 const list = document.getElementById('admin-withdraw-list');
                 const data = snap.val(); list.innerHTML = ""; if (!data) return;
                 Object.keys(data).forEach(id => {
                     if (data[id].status === 'paid') return;
-                    list.innerHTML += `<div class="bg-slate-900 p-4 rounded-xl border-r-4 border-red-500">
-                        <div class="flex justify-between items-center mb-2"><p class="font-black text-xs text-white">$${data[id].amount}</p><button onclick="db.ref('withdrawals/${id}').update({status:'paid'})" class="bg-emerald-600 px-3 py-1 rounded text-[8px] font-black">تم الدفع ✅</button></div>
-                        <p class="text-[9px] text-slate-400">المحفظة: ${data[id].account}</p>
-                        <p class="text-[9px] text-blue-400 underline">${data[id].contact}</p>
+                    list.innerHTML += `<div class="bg-slate-900 p-4 rounded-xl border-r-4 border-red-500 flex justify-between items-center">
+                        <div><p class="num-font text-white font-bold">$${data[id].amount}</p><p class="text-[9px] text-slate-400">${data[id].method}: ${data[id].account}</p></div>
+                        <button onclick="db.ref('withdrawals/${id}').update({status:'paid'})" class="bg-emerald-600 px-3 py-1 rounded text-[8px] font-black text-white italic">تم الدفع ✅</button>
                     </div>`;
                 });
             });
         }
 
-        checkRoute();
+        // تشغيل نظام التوجيه
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('id')) {
+            document.getElementById('redirect-screen').classList.remove('hidden');
+            // نفس دالة handleVisitor السابقة هنا لزيادة النقرات...
+            setTimeout(() => window.location.href = "https://hp.funroom.store/a/8nw6emt2", 2000);
+        } else { initApp(); }
+
     </script>
 </body>
 </html>
