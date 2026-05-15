@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daring Money | المنصة الاحترافية للمروجين</title>
+    <title>Daring Money  </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -15,151 +15,106 @@
         .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .gradient-text { background: linear-gradient(90deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); transition: all 0.3s ease; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.5); }
-        input, select { background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(71, 85, 105, 0.5) !important; }
-        .stat-card { border-bottom: 3px solid transparent; transition: all 0.3s ease; }
-        .stat-card:hover { border-bottom-color: #3b82f6; background: rgba(30, 41, 59, 0.8); }
+        input, select { background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(71, 85, 105, 0.5) !important; color: white !important; }
     </style>
 </head>
 <body>
 
     <div id="redirect-screen" class="hidden fixed inset-0 z-[10000] bg-[#050b1a] flex flex-col items-center justify-center p-6 text-center">
         <div class="relative w-20 h-20 mb-8">
-            <div class="absolute inset-0 border-4 border-blue-500/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-blue-500/10 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin"></div>
         </div>
-        <h2 class="text-2xl font-black gradient-text mb-2">Daring Money Secure</h2>
-        <p class="text-slate-400 animate-pulse text-sm">جاري فحص أمان الرابط واحتساب النقرة...</p>
+        <h2 class="text-2xl font-black text-white mb-2 italic">DARING <span class="text-blue-500">MONEY</span></h2>
+        <div class="flex items-center gap-2 justify-center">
+            <span class="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
+            <p class="text-slate-300 font-bold text-sm tracking-wide animate-pulse">جاري فحص الأمان...</p>
+        </div>
+    </div>
+
+    <div id="copy-toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-[1000]">
+        <span class="text-lg">✅</span>
+        <span class="text-sm font-bold">تم نسخ رابطك التسويقي بنجاح!</span>
     </div>
 
     <nav id="nav" class="hidden glass-card sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
-        <div class="flex flex-col">
-            <h1 class="text-xl font-black tracking-tighter text-white">DARING <span class="text-blue-500">MONEY</span></h1>
-            <p id="user-welcome" class="text-[10px] text-slate-400 font-bold italic underline"></p>
+        <div class="flex flex-col text-right">
+            <h1 class="text-xl font-black text-white italic">DARING <span class="text-blue-500">MONEY</span></h1>
+            <p id="user-welcome" class="text-[10px] text-emerald-400 font-bold italic underline"></p>
         </div>
-        <button onclick="logout()" class="text-xs bg-red-500/10 text-red-500 px-4 py-2 rounded-xl border border-red-500/20 font-bold active:scale-95 transition-all">خروج</button>
+        <button onclick="logout()" class="text-xs bg-red-500/10 text-red-500 px-4 py-2 rounded-xl border border-red-500/20 font-bold">خروج</button>
     </nav>
 
-    <div id="auth-section" class="hidden min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950">
-        <div class="glass-card p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl">
-            <div class="text-center mb-10">
-                <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg rotate-3">
-                    <span class="text-3xl">💰</span>
-                </div>
-                <h2 id="auth-title" class="text-3xl font-black text-white italic">DARING <span class="text-blue-500">MONEY</span></h2>
-                <p class="text-slate-500 text-xs mt-2 font-bold uppercase tracking-widest">أكبر منصة للمروجين المحترفين</p>
-            </div>
-            
+    <div id="auth-section" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card p-8 rounded-[2.5rem] w-full max-w-md text-center">
+            <h2 id="auth-title" class="text-3xl font-black text-white italic mb-8">DARING <span class="text-blue-500">MONEY</span></h2>
             <div class="space-y-4">
-                <input type="text" id="username" placeholder="اسم المستخدم" class="hidden w-full p-4 rounded-2xl outline-none focus:ring-2 ring-blue-500/50 transition-all text-sm">
-                <input type="email" id="email" placeholder="البريد الإلكتروني" class="w-full p-4 rounded-2xl outline-none focus:ring-2 ring-blue-500/50 transition-all text-sm text-left">
-                <input type="password" id="password" placeholder="كلمة المرور" class="w-full p-4 rounded-2xl outline-none focus:ring-2 ring-blue-500/50 transition-all text-sm text-left">
-                <button onclick="handleAuth()" id="auth-btn" class="btn-primary w-full py-4 rounded-2xl font-black text-white shadow-lg active:scale-95">تسجيل الدخول</button>
-                <p onclick="toggleAuthMode()" id="auth-switch" class="text-center text-slate-500 text-xs font-bold cursor-pointer hover:text-blue-400 transition-colors">ليس لديك حساب؟ سجل الآن</p>
+                <input type="text" id="username" placeholder="اسم المستخدم" class="hidden w-full p-4 rounded-2xl outline-none text-sm text-right">
+                <input type="email" id="email" placeholder="البريد الإلكتروني" class="w-full p-4 rounded-2xl outline-none text-sm text-left">
+                <input type="password" id="password" placeholder="كلمة المرور" class="w-full p-4 rounded-2xl outline-none text-sm text-left">
+                <button onclick="handleAuth()" id="auth-btn" class="btn-primary w-full py-4 rounded-2xl font-black text-white">تسجيل الدخول</button>
+                <p onclick="toggleAuthMode()" id="auth-switch" class="text-slate-500 text-xs font-bold cursor-pointer underline">ليس لديك حساب؟ سجل الآن</p>
             </div>
         </div>
     </div>
 
-    <div id="dashboard-section" class="hidden max-w-6xl mx-auto p-4 space-y-6 mt-4">
+    <div id="dashboard-section" class="hidden max-w-4xl mx-auto p-4 space-y-6">
         
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="glass-card p-6 rounded-3xl stat-card text-center">
-                <p class="text-blue-400 text-[11px] font-black mb-1">أرباح اليوم</p>
-                <h3 id="stat-today" class="text-2xl font-black text-white tabular-nums tracking-tighter">$0.00</h3>
-            </div>
-            <div class="glass-card p-6 rounded-3xl stat-card text-center">
-                <p class="text-slate-400 text-[11px] font-black mb-1 italic">إجمالي الأرباح</p>
-                <h3 id="stat-total" class="text-2xl font-black text-white tabular-nums tracking-tighter">$0.00</h3>
-            </div>
-            <div class="glass-card p-6 rounded-3xl stat-card text-center border-b-emerald-500/40">
-                <p class="text-emerald-400 text-[11px] font-black mb-1 underline">قابل للسحب</p>
-                <h3 id="stat-withdrawable" class="text-2xl font-black text-emerald-400 tabular-nums tracking-tighter">$0.00</h3>
-            </div>
-            <div class="glass-card p-6 rounded-3xl stat-card text-center border-b-purple-500/40">
-                <p class="text-purple-400 text-[11px] font-black mb-1">عدد النقرات</p>
-                <h3 id="stat-clicks" class="text-2xl font-black text-white tabular-nums tracking-tighter">0</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-blue-400 text-[10px] font-black mb-1">أرباح اليوم</p><h3 id="stat-today" class="text-xl font-black">$0.00</h3></div>
+            <div class="glass-card p-4 rounded-2xl text-center"><p class="text-slate-400 text-[10px] font-black mb-1">الإجمالي</p><h3 id="stat-total" class="text-xl font-black">$0.00</h3></div>
+            <div class="glass-card p-4 rounded-2xl text-center border-b-emerald-500/40"><p class="text-emerald-400 text-[10px] font-black mb-1 underline">للسحب</p><h3 id="stat-withdrawable" class="text-xl font-black text-emerald-400">$0.00</h3></div>
+            <div class="glass-card p-4 rounded-2xl text-center border-b-purple-500/40"><p class="text-purple-400 text-[10px] font-black mb-1">النقرات</p><h3 id="stat-clicks" class="text-xl font-black text-white">0</h3></div>
+        </div>
+
+        <div class="glass-card p-6 rounded-[2rem] border-r-4 border-blue-500">
+            <h4 class="font-bold text-xs text-slate-300 mb-3 italic">🔗 رابط التسويق الخاص بك</h4>
+            <div class="flex bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 p-1">
+                <input type="text" id="ref-link" readonly class="bg-transparent px-3 flex-1 text-[10px] outline-none text-blue-300 font-mono italic">
+                <button onclick="copyRef()" class="btn-primary px-6 py-2 rounded-xl text-xs font-black text-white">نسخ</button>
             </div>
         </div>
 
-        <div class="glass-card p-8 rounded-[2rem] border-r-4 border-blue-500">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="p-2 bg-blue-500/10 rounded-lg text-blue-500">🔗</div>
-                <h4 class="font-bold text-sm text-slate-300">رابط التسويق الخاص بك</h4>
+        <div class="glass-card p-6 rounded-[2rem] border-r-4 border-emerald-500">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="text-xl">💰</span>
+                <h4 class="font-bold text-sm text-emerald-400">طلب سحب الأرباح</h4>
             </div>
-            <div class="flex bg-slate-950/80 rounded-2xl overflow-hidden border border-slate-800 p-1.5">
-                <input type="text" id="ref-link" readonly class="bg-transparent px-4 flex-1 text-xs outline-none text-blue-300 font-mono italic">
-                <button onclick="copyRef()" class="btn-primary px-8 py-3 rounded-xl text-xs font-black text-white">نسخ</button>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <select id="w-method" class="w-full p-4 rounded-2xl text-xs font-bold outline-none">
+                        <option value="ZainCash">زين كاش (Zain Cash)</option>
+                        <option value="AsiaCell">رصيد آسيا (Asiacell)</option>
+                        <option value="USDT">USDT (TRC20)</option>
+                    </select>
+                    <input type="text" id="w-account" placeholder="رقم الهاتف أو عنوان المحفظة" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="number" id="w-amount" placeholder="المبلغ (الأدنى 7$)" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
+                    <input type="text" id="w-contact" placeholder="يوزر التليجرام الخاص بك" class="w-full p-4 rounded-2xl text-xs text-right font-bold outline-none">
+                </div>
+                <button onclick="confirmWithdraw()" class="btn-primary w-full py-4 rounded-2xl font-black text-white shadow-lg active:scale-95 transition-all">تأكيد طلب السحب</button>
             </div>
-            <p class="text-[10px] text-slate-500 mt-4 italic font-medium">ملاحظة: يتم احتساب النقرات الحقيقية فقط (0.02$ للنقرة).</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button onclick="openModal('withdraw-modal')" class="glass-card border-emerald-500/20 p-6 rounded-3xl flex items-center justify-between group">
-                <div class="text-right">
-                    <span class="block text-emerald-400 font-black text-lg">طلب سحب</span>
-                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">الحد الأدنى 7$</span>
-                </div>
-                <div class="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-2xl group-active:scale-90 transition-all">💰</div>
-            </button>
-            <a href="https://t.me/eruuiyl" target="_blank" class="glass-card border-blue-500/20 p-6 rounded-3xl flex items-center justify-between group">
-                <div class="text-right">
-                    <span class="block text-blue-400 font-black text-lg">الدعم الفني</span>
-                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">تواصل مباشر تليجرام</span>
-                </div>
-                <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-2xl group-active:scale-90 transition-all">💬</div>
-            </a>
         </div>
 
         <div class="glass-card p-6 rounded-[2rem]">
-            <h4 class="text-xs font-black mb-4 text-slate-500 flex items-center gap-2">
-                <span class="w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
-                سجل العمليات المالية
-            </h4>
-            <div id="user-withdraw-history" class="space-y-3">
-                </div>
+            <h4 class="text-[10px] font-black mb-4 text-slate-500 uppercase tracking-widest italic">📋 سجل السحوبات</h4>
+            <div id="user-withdraw-history" class="space-y-3"></div>
         </div>
 
-        <div id="admin-area" class="hidden space-y-8 pt-10 border-t border-slate-800">
-            <h2 class="text-2xl font-black text-red-500 italic flex items-center gap-2 px-2">
-                <span class="p-2 bg-red-500/10 rounded-lg">🛡️</span>
-                لوحة التحكم الإدارية
-            </h2>
-            
-            <div class="bg-red-500/5 border border-red-500/20 p-6 rounded-3xl">
-                <h3 class="font-bold text-slate-300 mb-4">طلبات السحب المعلقة</h3>
-                <div id="admin-withdraw-list" class="space-y-4"></div>
-            </div>
+        <a href="https://t.me/eruuiyl" target="_blank" class="glass-card p-4 rounded-2xl flex items-center justify-center gap-3 border-blue-500/20 active:scale-95 transition-all">
+            <span class="text-xl">💬</span>
+            <span class="font-bold text-sm text-blue-400 italic">تواصل مع الدعم الفني</span>
+        </a>
 
-            <div class="glass-card p-6 rounded-3xl">
-                <h3 class="font-bold text-slate-300 mb-4 italic">المروجين المسجلين</h3>
-                <div id="admin-users-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="withdraw-modal" class="hidden fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-card p-8 rounded-[2.5rem] w-full max-w-md space-y-5 border-emerald-500/30">
-            <div class="text-center">
-                <h3 class="text-2xl font-black text-emerald-400 italic">سحب الأرباح</h3>
-                <p class="text-[10px] text-slate-500 mt-1 uppercase font-bold tracking-widest">تتم المعالجة خلال 48 ساعة</p>
-            </div>
-            <div class="space-y-4">
-                <select id="w-method" class="w-full p-4 rounded-2xl text-sm font-bold outline-none">
-                    <option value="ZainCash">زين كاش (Zain Cash)</option>
-                    <option value="AsiaCell">رصيد آسيا (Asiacell)</option>
-                    <option value="USDT">USDT (TRC20)</option>
-                </select>
-                <input type="text" id="w-account" placeholder="رقم المحفظة / رقم الهاتف" class="w-full p-4 rounded-2xl text-sm text-right font-bold outline-none">
-                <input type="number" id="w-amount" placeholder="المبلغ المراد سحبه" class="w-full p-4 rounded-2xl text-sm text-right font-bold outline-none">
-                <input type="text" id="w-contact" placeholder="يوزر التليجرام الخاص بك" class="w-full p-4 rounded-2xl text-sm text-right font-bold outline-none">
-                <button onclick="confirmWithdraw()" class="w-full bg-emerald-600 py-4 rounded-2xl font-black text-white shadow-lg active:scale-95">إرسال الطلب الآن</button>
-                <button onclick="closeModal('withdraw-modal')" class="w-full text-slate-500 text-xs font-bold uppercase tracking-tighter">إلغاء</button>
-            </div>
+        <div id="admin-area" class="hidden pt-10 border-t border-slate-800 space-y-6">
+            <h2 class="text-xl font-black text-red-500 px-2 italic">🛡️ إدارة المنصة</h2>
+            <div id="admin-withdraw-list" class="space-y-4"></div>
+            <div id="admin-users-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
         </div>
     </div>
 
     <script>
-        // --- 1. إعدادات الموقع وغراضك ---
         const firebaseConfig = {
             apiKey: "AIzaSyCnkJf-6sAeRJpm34yXLmklLwSxM-GJvUc",
             authDomain: "my-dash-c78e3.firebaseapp.com",
@@ -173,24 +128,27 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
-        // حسابات الأدمن المحدثة
         const ADMIN_EMAILS = ["xxetali46@gmail.com", "xxetali47@gmail.com"];
-        const DEFAULT_MARKETING_LINK = "https://hp.funroom.store/a/8nw6emt2";
-        const CLICK_VALUE = 0.02;
+        const DEFAULT_LINK = "https://hp.funroom.store/a/8nw6emt2";
+        const CLICK_PRICE = 0.02;
 
         let currentUserData = null;
         let isLoginMode = true;
 
-        // --- 2. نظام التوجيه والنقرات (checkRoute) ---
-        async function checkRoute() {
-            const params = new URLSearchParams(window.location.search);
-            const promoterId = params.get('id');
-            if (promoterId) {
-                document.getElementById('redirect-screen').classList.remove('hidden');
-                handleVisitor(promoterId);
-            } else {
-                initApp();
-            }
+        // وظيفة نسخ الرابط مع الإشعار المنبثق
+        function copyRef() {
+            const el = document.getElementById('ref-link');
+            el.select();
+            el.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
         }
 
         async function handleVisitor(id) {
@@ -198,14 +156,11 @@
                 const ipRes = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipRes.json();
                 const vIp = ipData.ip.replace(/\./g, '_');
-                
                 const ipRef = db.ref('ip_logs/' + id + '/' + vIp);
                 const userRef = db.ref('users/' + id);
-                
                 const ipSnap = await ipRef.once('value');
                 const now = Date.now();
 
-                // حماية من النقرات المتكررة (خلال 24 ساعة)
                 if (ipSnap.exists() && (now - ipSnap.val() < 86400000)) {
                     finalizeRedirect(userRef);
                 } else {
@@ -213,37 +168,42 @@
                     await userRef.transaction(d => {
                         if (d) {
                             d.clicks = (d.clicks || 0) + 1;
-                            d.todayBalance = Number(((d.todayBalance || 0) + CLICK_VALUE).toFixed(2));
-                            d.totalBalance = Number(((d.totalBalance || 0) + CLICK_VALUE).toFixed(2));
+                            d.todayBalance = Number(((d.todayBalance || 0) + CLICK_PRICE).toFixed(2));
+                            d.totalBalance = Number(((d.totalBalance || 0) + CLICK_PRICE).toFixed(2));
                         }
                         return d;
                     });
                     finalizeRedirect(userRef);
                 }
-            } catch (e) { window.location.href = DEFAULT_MARKETING_LINK; }
+            } catch (e) { window.location.href = DEFAULT_LINK; }
         }
 
         async function finalizeRedirect(ref) {
             const snap = await ref.once('value');
-            const link = (snap.val() && snap.val().marketingLink) ? snap.val().marketingLink : DEFAULT_MARKETING_LINK;
+            const link = (snap.val() && snap.val().marketingLink) ? snap.val().marketingLink : DEFAULT_LINK;
             setTimeout(() => { window.location.href = link; }, 1200);
         }
 
-        // --- 3. نظام الجلسات والأرباح التلقائية ---
+        function checkRoute() {
+            const params = new URLSearchParams(window.location.search);
+            const promoterId = params.get('id');
+            if (promoterId) {
+                document.getElementById('redirect-screen').classList.remove('hidden');
+                handleVisitor(promoterId);
+            } else { initApp(); }
+        }
+
         function initApp() {
             auth.onAuthStateChanged(user => {
                 if (user) {
                     showUI('dashboard-section');
-                    // معالجة الأرباح اليومية عند الساعة 3 صباحاً
                     processSettlement(user.uid);
                     loadData(user);
                     if (ADMIN_EMAILS.includes(user.email)) {
                         document.getElementById('admin-area').classList.remove('hidden');
                         loadAdminPanel();
                     }
-                } else {
-                    showUI('auth-section');
-                }
+                } else { showUI('auth-section'); }
             });
         }
 
@@ -252,49 +212,15 @@
             userRef.once('value', snap => {
                 const d = snap.val(); if (!d) return;
                 const now = new Date();
-                const lastReset = d.lastResetDate || 0;
-                
-                // تحديد وقت الساعة 3 صباحاً اليوم
-                let settlementTime = new Date();
-                settlementTime.setHours(3, 0, 0, 0);
-
-                if (now.getTime() > settlementTime.getTime() && lastReset < settlementTime.getTime()) {
-                    const newWithdrawable = Number(((d.withdrawableBalance || 0) + (d.todayBalance || 0)).toFixed(2));
+                let settlement = new Date(); settlement.setHours(3, 0, 0, 0);
+                if (now.getTime() > settlement.getTime() && (d.lastResetDate || 0) < settlement.getTime()) {
                     userRef.update({
-                        withdrawableBalance: newWithdrawable,
+                        withdrawableBalance: Number(((d.withdrawableBalance || 0) + (d.todayBalance || 0)).toFixed(2)),
                         todayBalance: 0,
                         lastResetDate: now.getTime()
                     });
                 }
             });
-        }
-
-        // --- 4. وظائف الدخول واللوحة ---
-        async function handleAuth() {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            const name = document.getElementById('username').value;
-
-            if (!email || !pass) return alert("يرجى ملء الحقول.");
-
-            try {
-                if (isLoginMode) {
-                    await auth.signInWithEmailAndPassword(email, pass);
-                } else {
-                    if (!name) return alert("يرجى كتابة الاسم.");
-                    const res = await auth.createUserWithEmailAndPassword(email, pass);
-                    await db.ref('users/' + res.user.uid).set({
-                        username: name,
-                        email: email,
-                        clicks: 0,
-                        todayBalance: 0,
-                        totalBalance: 0,
-                        withdrawableBalance: 0,
-                        marketingLink: DEFAULT_MARKETING_LINK,
-                        lastResetDate: Date.now()
-                    });
-                }
-            } catch (e) { alert(e.message); }
         }
 
         function loadData(user) {
@@ -309,22 +235,19 @@
                 document.getElementById('ref-link').value = window.location.origin + window.location.pathname + "?id=" + user.uid;
             });
 
-            // تحميل سجل السحوبات
             db.ref('withdrawals').orderByChild('uid').equalTo(user.uid).on('value', snap => {
                 const list = document.getElementById('user-withdraw-history');
-                const data = snap.val();
-                if (!data) { list.innerHTML = "<p class='text-center text-slate-600 italic text-[10px] py-4'>لا توجد عمليات سحب حالياً.</p>"; return; }
-                let html = "";
+                const data = snap.val(); list.innerHTML = "";
+                if (!data) { list.innerHTML = "<p class='text-[9px] text-slate-600 text-center'>لا توجد طلبات سابقة.</p>"; return; }
                 Object.keys(data).reverse().forEach(id => {
                     const w = data[id];
-                    const statusClass = w.status === 'paid' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10';
-                    const statusText = w.status === 'paid' ? 'تم الدفع ✅' : 'قيد الانتظار ⏳';
-                    html += `<div class="flex justify-between items-center bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
-                                <div><p class="font-black text-sm text-white">$${w.amount}</p><p class="text-[9px] text-slate-500 font-bold">${w.method}</p></div>
-                                <div class="px-3 py-1 rounded-full text-[9px] font-black ${statusClass}">${statusText}</div>
-                             </div>`;
+                    const s = w.status === 'paid' ? 'تم الدفع ✅' : 'قيد الانتظار ⏳';
+                    const c = w.status === 'paid' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10';
+                    list.innerHTML += `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl border border-slate-800 italic">
+                        <div><p class="font-black text-xs">$${w.amount}</p><p class="text-[8px] text-slate-500">${w.method}</p></div>
+                        <div class="px-2 py-1 rounded-lg text-[8px] font-black ${c}">${s}</div>
+                    </div>`;
                 });
-                list.innerHTML = html;
             });
         }
 
@@ -334,82 +257,37 @@
             const account = document.getElementById('w-account').value;
             const contact = document.getElementById('w-contact').value;
 
-            if (isNaN(amount) || amount < 7) return alert("الحد الأدنى للسحب هو 7$");
-            if (amount > currentUserData.withdrawableBalance) return alert("رصيدك القابل للسحب غير كافٍ.");
-            if (!account || !contact) return alert("يرجى إكمال جميع المعلومات.");
+            if (amount < 7 || isNaN(amount)) return alert("الحد الأدنى 7$");
+            if (amount > currentUserData.withdrawableBalance) return alert("الرصيد غير كافٍ.");
+            if (!account || !contact) return alert("أكمل البيانات.");
 
-            const uid = auth.currentUser.uid;
-            const wRef = db.ref('withdrawals').push();
-            
-            // خصم المبلغ من الرصيد القابل للسحب
-            db.ref('users/' + uid).transaction(d => {
-                if (d) {
-                    d.withdrawableBalance = Number((d.withdrawableBalance - amount).toFixed(2));
-                }
+            db.ref('users/' + auth.currentUser.uid).transaction(d => {
+                if (d) d.withdrawableBalance = Number((d.withdrawableBalance - amount).toFixed(2));
                 return d;
             }).then(() => {
-                wRef.set({
-                    uid, amount, method, account, contact, status: 'pending', timestamp: Date.now()
-                }).then(() => {
-                    alert("تم إرسال طلب السحب بنجاح!");
-                    closeModal('withdraw-modal');
-                });
+                db.ref('withdrawals').push({ uid: auth.currentUser.uid, amount, method, account, contact, status: 'pending', timestamp: Date.now() });
+                alert("تم إرسال طلبك بنجاح!");
             });
         }
 
-        // --- 5. لوحة التحكم للأدمن (Admin Logic) ---
-        function loadAdminPanel() {
-            // قائمة الطلبات
-            db.ref('withdrawals').on('value', snap => {
-                const list = document.getElementById('admin-withdraw-list');
-                const data = snap.val(); list.innerHTML = "";
-                if (!data) return;
-                Object.keys(data).forEach(id => {
-                    if (data[id].status === 'paid') return;
-                    list.innerHTML += `<div class="bg-slate-950 p-4 rounded-2xl border-r-4 border-amber-500 shadow-xl flex flex-col gap-2">
-                        <div class="flex justify-between items-center">
-                            <span class="font-black text-white">$${data[id].amount} (${data[id].method})</span>
-                            <button onclick="db.ref('withdrawals/${id}').update({status:'paid'})" class="bg-emerald-600 px-4 py-1 rounded-lg text-[10px] font-black text-white">تحديد كمدفوع ✅</button>
-                        </div>
-                        <p class="text-[10px] text-slate-400 font-bold">المحفظة: <span class="text-white">${data[id].account}</span></p>
-                        <p class="text-[10px] text-blue-400 font-bold underline">تواصل: ${data[id].contact}</p>
-                    </div>`;
-                });
-            });
-
-            // قائمة المستخدمين للتعديل
-            db.ref('users').on('value', snap => {
-                const list = document.getElementById('admin-users-list');
-                const users = snap.val(); list.innerHTML = "";
-                for (let uid in users) {
-                    list.innerHTML += `<div class="glass-card p-4 rounded-2xl border border-slate-800">
-                        <p class="font-black text-blue-400 text-sm">${users[uid].username}</p>
-                        <p class="text-[9px] text-slate-500 mb-2">${users[uid].email}</p>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
-                            <button onclick="adminEditBalance('${uid}', 'withdrawableBalance')" class="bg-slate-800 p-2 rounded-lg text-[9px]">تعديل الرصيد</button>
-                            <button onclick="adminEditLink('${uid}')" class="bg-slate-800 p-2 rounded-lg text-[9px]">تغيير الرابط</button>
-                        </div>
-                    </div>`;
+        async function handleAuth() {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('password').value;
+            const n = document.getElementById('username').value;
+            try {
+                if (isLoginMode) { await auth.signInWithEmailAndPassword(e, p); }
+                else {
+                    const res = await auth.createUserWithEmailAndPassword(e, p);
+                    await db.ref('users/' + res.user.uid).set({ username: n, email: e, clicks: 0, todayBalance: 0, totalBalance: 0, withdrawableBalance: 0, marketingLink: DEFAULT_LINK, lastResetDate: Date.now() });
                 }
-            });
+            } catch (err) { alert(err.message); }
         }
 
-        function adminEditBalance(uid, field) {
-            const val = prompt("أدخل القيمة الجديدة:");
-            if (val) db.ref('users/' + uid).update({ [field]: parseFloat(val) });
-        }
-        function adminEditLink(uid) {
-            const link = prompt("أدخل الرابط التسويقي الجديد:");
-            if (link) db.ref('users/' + uid).update({ marketingLink: link });
-        }
-
-        // وظائف الواجهة المساعدة
         function toggleAuthMode() {
             isLoginMode = !isLoginMode;
             document.getElementById('username').classList.toggle('hidden', isLoginMode);
-            document.getElementById('auth-title').innerHTML = isLoginMode ? "DARING <span class='text-blue-500'>MONEY</span>" : "عضو <span class='text-emerald-500'>جديد</span>";
-            document.getElementById('auth-btn').innerText = isLoginMode ? "تسجيل الدخول" : "إنشاء الحساب الآن";
-            document.getElementById('auth-switch').innerText = isLoginMode ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب بالفعل؟ ادخل هنا";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "تسجيل الدخول" : "إنشاء حساب";
+            document.getElementById('auth-switch').innerText = isLoginMode ? "ليس لديك حساب؟ سجل الآن" : "لديك حساب؟ ادخل هنا";
         }
 
         function showUI(id) {
@@ -420,14 +298,23 @@
             if (id === 'dashboard-section') document.getElementById('nav').classList.remove('hidden');
         }
 
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-        function copyRef() { const el = document.getElementById('ref-link'); el.select(); document.execCommand('copy'); alert("✅ تم نسخ رابطك التسويقي بنجاح!"); }
         function logout() { auth.signOut(); }
+        function loadAdminPanel() {
+            db.ref('withdrawals').on('value', snap => {
+                const list = document.getElementById('admin-withdraw-list');
+                const data = snap.val(); list.innerHTML = ""; if (!data) return;
+                Object.keys(data).forEach(id => {
+                    if (data[id].status === 'paid') return;
+                    list.innerHTML += `<div class="bg-slate-900 p-4 rounded-xl border-r-4 border-red-500">
+                        <div class="flex justify-between items-center mb-2"><p class="font-black text-xs text-white">$${data[id].amount}</p><button onclick="db.ref('withdrawals/${id}').update({status:'paid'})" class="bg-emerald-600 px-3 py-1 rounded text-[8px] font-black">تم الدفع ✅</button></div>
+                        <p class="text-[9px] text-slate-400">المحفظة: ${data[id].account}</p>
+                        <p class="text-[9px] text-blue-400 underline">${data[id].contact}</p>
+                    </div>`;
+                });
+            });
+        }
 
-        // تشغيل نظام التوجيه
         checkRoute();
-
     </script>
 </body>
 </html>
